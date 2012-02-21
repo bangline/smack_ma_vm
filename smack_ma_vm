@@ -168,3 +168,12 @@ rvm install 1.9.3
 
 # Autoload bundler for gemsets
 echo "bundler" > ~/.rvm/gemsets/global
+echo "awesome_print" >> ~/.rvm/gemsets/global
+
+# MySql db helper
+cd
+echo "#!/bin/bash" > .mysqldb
+echo "mysql -u root" >> .mysqldb
+chmod +x .mysqldb
+echo "alias mdb=~/.mysqldb" >> ~/.aliases
+
