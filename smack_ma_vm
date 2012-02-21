@@ -104,7 +104,7 @@ wget http://nodejs.org/dist/v0.6.11/node-v0.6.11.tar.gz
 gunzip node-v0.6.11.tar.gz
 tar -xf node-v0.6.11.tar
 
-cd /tmp/node
+cd /tmp/node-v0.6.11
 ./configure
 make
 sudo make install
