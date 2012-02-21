@@ -1,4 +1,28 @@
 #!/bin/bash
+echo "                              __                                     "
+echo "  ______ _____ _____    ____ |  | __   _____ _____    ___  _______   "
+echo " /  ___//     \\__  \ _/ ___\|  |/ /  /     \\__  \   \  \/ /     \  "
+echo " \___ \|  Y Y  \/ __ \\  \___|    <  |  Y Y  \/ __ \_  \   /  Y Y  \ "
+echo "/____  >__|_|  (____  /\___  >__|_ \ |__|_|  (____  /   \_/|__|_|  / "
+echo "     \/      \/     \/     \/     \/       \/     \/             \/  "
+echo "
+
+Installs
+==========
+MySQL
+Sqlite
+Redis
+Node
+Ruby + RVM 
+Vim (Daves setup)
+Timezones
+
+You will have to hit enter a few times for MySql passwords and Redis setup, 
+just sayin.
+
+"
+
+read "I'm cool with that, smack ma VM now"
 
 # Everything we will do is at home
 cd
@@ -16,12 +40,61 @@ sudo apt-get install mysql-server mysql-client -y -q
 #### Basic Packages
 sudo apt-get install git-core -y -q
 sudo apt-get install curl -y -q
+sudo apt-get install unzip -y -q
+
+# Fuck lets set the time to Londonium
+sudo mv /etc/localtime /etc/localtime-old
+sudo ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
 #### System Ruby
 sudo apt-get install ruby -y -q
 sudo apt-get install rubygems -y -q
 sudo apt-get install irb -y -q
 sudo apt-get install rake -y -q
+
+#### Packages for RVM 
+sudo apt-get install openssl libreadline6 libreadline6-dev git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion -y -q
+
+#### Packages for Node.js
+sudo apt-get install g++ apache2-utils
+
+#### Packages for Redis
+sudo apt-get install tcl8.5
+
+#### Node
+cd /tmp
+wget http://nodejs.org/dist/v0.6.11/node-v0.6.11.tar.gz
+gunzip node-v0.6.11.tar.gz
+tar -xf node-v0.6.11.tar
+
+cd /tmp/node-v0.6.11
+./configure
+make
+sudo make install
+
+#### NPM
+cd /tmp
+curl http://npmjs.org/install.sh | sh
+
+#### Redis
+cd /tmp
+wget http://redis.googlecode.com/files/redis-2.4.7.tar.gz
+tar xzf redis-2.4.7.tar.gz
+cd redis-2.4.7
+make
+sudo make install
+cd utils
+
+#### It's going to ask questions oh no!!!
+sudo ./install_server.sh
+
+cd
+
+#### Droid Sans mono font
+mkdir ~/.fonts
+wget -O droid.zip http://www.fontsquirrel.com/fonts/download/Droid-Sans-Mono
+unzip droid.zip -d ~/.fonts
+fc-cache -f
 
 #### Vim editor
 sudo apt-get install vim -y -q
@@ -59,9 +132,6 @@ git clone git://github.com/hron84/Gemfile.vim.git
 cd
 
 #### RVM 
-
-# Requirements for MRI Rubies 
-sudo apt-get install openssl libreadline6 libreadline6-dev git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion -y -q
 bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
 echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bashrvm
 
@@ -95,39 +165,3 @@ rvm install 1.9.3
 
 # Autoload bundler for gemsets
 echo "bundler" > ~/.rvm/gemsets/global
-
-#### Node
-
-sudo apt-get install g++ apache2-utils
-cd /tmp
-wget http://nodejs.org/dist/v0.6.11/node-v0.6.11.tar.gz
-gunzip node-v0.6.11.tar.gz
-tar -xf node-v0.6.11.tar
-
-cd /tmp/node-v0.6.11
-./configure
-make
-sudo make install
-
-# NPM
-cd /tmp
-curl http://npmjs.org/install.sh | sh
-
-#### Redis
-cd /tmp
-wget http://redis.googlecode.com/files/redis-2.4.7.tar.gz
-tar xzf redis-2.4.7.tar.gz
-cd redis-2.4.7
-make
-
-## Fuck lets set the time to Londonium
-sudo mv /etc/localtime /etc/localtime-old
-sudo ln -sf /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
-
-
-
-
-
-
-
-
