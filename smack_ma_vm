@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "
+"
 echo "                              __                                     "
 echo "  ______ _____ _____    ____ |  | __   _____ _____    ___  _______   "
 echo " /  ___//     \\__  \ _/ ___\|  |/ /  /     \\__  \   \  \/ /     \  "
@@ -22,7 +24,7 @@ just sayin.
 
 "
 
-read "I'm cool with that, smack ma VM now"
+echo "I'm cool with that, smack ma VM now [press enter]"
 
 # Everything we will do is at home
 cd
@@ -41,6 +43,7 @@ sudo apt-get install mysql-server mysql-client -y -q
 sudo apt-get install git-core -y -q
 sudo apt-get install curl -y -q
 sudo apt-get install unzip -y -q
+sudo apt-get install kdiff3 -y -q
 
 # Fuck lets set the time to Londonium
 sudo mv /etc/localtime /etc/localtime-old
