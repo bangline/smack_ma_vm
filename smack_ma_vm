@@ -1,0 +1,133 @@
+#!/bin/bash
+
+# Everything we will do is at home
+cd
+
+#### Get the system up to date first
+sudo apt-get update -y -q
+sudo apt-get dist-upgrade -y -q
+sudo apt-get install build-essential -y -q
+
+#### MySQL first as that wants a password
+sudo apt-get install mysql-server mysql-client -y -q
+
+# Install the basics taken from the original chef scripts by C.Gemmell https://github.com/Regenersis/chef-vm-setup/blob/master/Install
+
+#### Basic Packages
+sudo apt-get install git-core -y -q
+sudo apt-get install curl -y -q
+
+#### System Ruby
+sudo apt-get install ruby -y -q
+sudo apt-get install rubygems -y -q
+sudo apt-get install irb -y -q
+sudo apt-get install rake -y -q
+
+#### Vim editor
+sudo apt-get install vim -y -q
+sudo apt-get install vim-gnome -y -q
+
+# ctags and Ack
+sudo apt-get install exuberant-ctags ack-grep -y -q
+
+# Get the pathogen going
+mkdir -p ~/.vim/autoload ~/.vim/bundle
+curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/HEAD/autoload/pathogen.vim
+
+# Install the plugins
+cd ~/.vim/bundle
+
+git clone git://github.com/mileszs/ack.vim.git
+git clone git://github.com/vim-scripts/AutoTag.git
+git clone git://github.com/flazz/vim-colorschemes.git
+git clone git://github.com/wincent/Command-T.git
+git clone git://github.com/pythonandchips/vim-cucumber.git
+git clone git://github.com/tsaleh/vim-matchit.git
+git clone git://github.com/tpope/vim-rails.git
+git clone git://github.com/ecomba/vim-ruby-refactoring.git
+git clone git://github.com/msanders/snipmate.vim.git
+git clone git://github.com/scrooloose/snipmate-snippets.git
+git clone git://github.com/tsaleh/vim-supertab.git
+git clone git://github.com/mikewest/vimroom.git
+git clone git://github.com/kchmck/vim-coffee-script.git
+git clone git://github.com/cakebaker/scss-syntax.vim.git
+git clone git://github.com/tpope/vim-markdown.git
+git clone git://github.com/wavded/vim-stylus.git
+git clone git://github.com/scrooloose/nerdtree
+git clone git://github.com/hron84/Gemfile.vim.git
+
+cd
+
+#### RVM 
+
+# Requirements for MRI Rubies 
+sudo apt-get install openssl libreadline6 libreadline6-dev git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev libncurses5-dev automake libtool bison subversion -y -q
+bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bashrvm
+
+### Dotfiles
+git clone git://github.com/bangline/dotfiles.git
+
+mv dotfiles/.aliases ~/.aliases 
+mv dotfiles/.bashcommanddisplay ~/.bashcommanddisplay
+mv dotfiles/.bashhistory ~/.bashhistory
+mv dotfiles/.gemrc ~/.gemrc
+mv dotfiles/.gitconfig ~/.gitconfig
+mv dotfiles/.globalgitignore ~/.globalgitignore
+mv dotfiles/.irbrc ~/.irbrc
+mv dotfiles/.railsrc ~/.railsrc
+mv dotfiles/.vimrc ~/.vimrc
+
+rm -rf dotfiles
+
+# Build a new bashrc
+rm ~/.bashrc
+echo "source ~/.aliases" >> ~/.bashrc
+echo "source ~/.bashcommanddisplay" >> ~/.bashrc
+echo "source ~/.bashhistory" >> ~/.bashrc
+echo "source ~/.bashrvm" >> ~/.bashrc
+
+# Install rubies
+source ~/.bashrc
+rvm install 1.8.7
+rvm install 1.9.2
+rvm install 1.9.3
+
+# Autoload bundler for gemsets
+echo "bundler" > ~/.rvm/gemsets/global
+
+#### Node
+
+sudo apt-get install g++ apache2-utils
+cd /tmp
+wget http://nodejs.org/dist/v0.6.11/node-v0.6.11.tar.gz
+gunzip node-v0.6.11.tar.gz
+tar -xf node-v0.6.11.tar
+
+cd /tmp/node
+./configure
+make
+sudo make install
+
+# NPM
+cd /tmp
+curl http://npmjs.org/install.sh | sh
+
+#### Redis
+cd /tmp
+wget http://redis.googlecode.com/files/redis-2.4.7.tar.gz
+tar xzf redis-2.4.7.tar.gz
+cd redis-2.4.7
+make
+
+## Fuck lets set the time to Londonium
+sudo mv /etc/localtime /etc/localtime-old
+sudo ln -sf /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+
+
+
+
+
+
+
+
